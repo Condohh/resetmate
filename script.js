@@ -324,3 +324,7 @@ document.getElementById('showStepsBtn').addEventListener('click', function () {
    ============================================================ */
 
 populateDropdowns();
+
+/* Set current year in footer */
+var yearEl = document.getElementById('footer-year');
+if (yearEl) { yearEl.textContent = new Date().getFullYear(); }

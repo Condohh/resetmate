@@ -3,10 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ResetMate</title>
 
-  <!-- Google Fonts -->
+  <!-- ===== PRIMARY SEO ===== -->
+  <title>ResetMate – Free Service Reset Procedures for VW, Audi, BMW & More</title>
+  <meta name="description" content="Free step-by-step oil service and inspection reset procedures for Volkswagen, Audi, BMW and more. Fast, mobile-friendly workshop reference tool for mechanics and apprentices." />
+  <meta name="keywords" content="service reset, oil service reset, inspection reset, VW Golf service reset, Audi A3 service reset, BMW service reset, car service light reset, workshop tool" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.resetmate.co.uk/" />
+
+  <!-- ===== OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ===== -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://www.resetmate.co.uk/" />
+  <meta property="og:title"       content="ResetMate – Free Service Reset Procedures" />
+  <meta property="og:description" content="Step-by-step oil service and inspection reset procedures for VW, Audi, BMW and more. Free mobile workshop reference tool." />
+  <meta property="og:site_name"   content="ResetMate" />
+
+  <!-- ===== TWITTER / X CARD ===== -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="ResetMate – Free Service Reset Procedures" />
+  <meta name="twitter:description" content="Step-by-step oil service and inspection reset procedures for VW, Audi, BMW and more. Free mobile workshop reference tool." />
+
+  <!-- ===== STRUCTURED DATA — WebApplication (JSON-LD) ===== -->
+  <!--
+    This tells Google exactly what kind of page this is.
+    Update "offers.price" if you ever charge for the tool.
+    Update "applicationCategory" if the scope expands.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ResetMate",
+    "url": "https://www.resetmate.co.uk/",
+    "description": "Free step-by-step oil service and inspection reset procedures for Volkswagen, Audi, BMW and more. Mobile-friendly workshop reference tool for mechanics and apprentices.",
+    "applicationCategory": "AutomotiveApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "GBP"
+    },
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Mechanics, Apprentice Technicians, Automotive Students"
+    }
+  }
+  </script>
+
+  <!-- ===== PERFORMANCE ===== -->
+  <!-- dns-prefetch speeds up the Google Fonts request -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" />
 
   <!-- App styles -->
@@ -29,10 +77,20 @@
   </header>
 
   <!-- ===== MAIN ===== -->
-  <main class="main-content">
+  <main class="main-content" aria-label="Service reset procedure lookup">
 
     <!-- Selector card -->
-    <section class="card selector-card">
+    <section class="card selector-card" aria-label="Vehicle and reset type selection">
+
+      <!--
+        Visually hidden paragraph: gives search engines meaningful page context
+        without affecting the visual layout for users.
+      -->
+      <p class="seo-description">
+        Select your vehicle and reset type below to instantly view the correct
+        step-by-step service reset procedure. Covers oil service resets and
+        inspection resets for Volkswagen, Audi, BMW and more.
+      </p>
 
       <div class="field-group">
         <label class="field-label" for="vehicleSelect">Vehicle</label>
@@ -69,7 +127,7 @@
 
   <!-- ===== FOOTER ===== -->
   <footer class="app-footer">
-    <p>ResetMate v1.0 &nbsp;&middot;&nbsp; Workshop Reference Tool</p>
+    <p>ResetMate v1.0 &nbsp;&middot;&nbsp; Workshop Reference Tool &nbsp;&middot;&nbsp; <span id="footer-year"></span></p>
   </footer>
 
   <!--
