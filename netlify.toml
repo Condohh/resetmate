@@ -1,0 +1,19 @@
+# netlify.toml
+# Place this file in the ROOT of your repository (same folder as index.html).
+# It tells Netlify to serve JS and CSS files with explicit UTF-8 charset headers,
+# which prevents browser encoding mismatches that silently break JS parsing.
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Content-Type = "text/css; charset=utf-8"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Content-Type = "text/html; charset=utf-8"

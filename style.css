@@ -1,5 +1,5 @@
 /* ============================================================
-   ResetMate — style.css  (v1.1)
+   ResetMate -- style.css  (v1.1)
    Workshop-style dark UI, mobile-first
    ============================================================ */
 
@@ -208,7 +208,7 @@ body {
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
-/* Disabled state — shown while waiting for upstream selection */
+/* Disabled state -- shown while waiting for upstream selection */
 .field-select:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -267,7 +267,7 @@ body {
    BUTTONS
    ============================================================ */
 
-/* Primary — blue, used for Show Steps */
+/* Primary -- blue, used for Show Steps */
 .btn-primary {
   width: 100%;
   background: var(--primary);
@@ -296,7 +296,7 @@ body {
   transform: translateY(1px);
 }
 
-/* Secondary — outlined, used for Submit Request */
+/* Secondary -- outlined, used for Submit Request */
 .btn-secondary {
   width: 100%;
   background: transparent;
@@ -474,7 +474,7 @@ body {
    ============================================================ */
 
 .request-card {
-  /* Explicitly override .card's padding — the header and form body
+  /* Explicitly override .card's padding -- the header and form body
      each control their own internal spacing */
   background: var(--surface);
   border: 1px solid var(--border);
@@ -483,7 +483,7 @@ body {
   overflow: hidden;
 }
 
-/* Coloured header band — mirrors the result-header treatment */
+/* Coloured header band -- mirrors the result-header treatment */
 .request-header {
   background: var(--surface-2);
   border-bottom: 1px solid var(--border);
@@ -517,7 +517,7 @@ body {
   margin-top: 3px;
 }
 
-/* Form body — same padding as .card */
+/* Form body -- same padding as .card */
 .request-form {
   display: flex;
   flex-direction: column;

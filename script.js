@@ -1,23 +1,23 @@
 /* ============================================================
-   ResetMate — script.js  (v1.1)
+   ResetMate -- script.js  (v1.1)
 
    DATA STRUCTURE OVERVIEW
    -----------------------
    The top-level object is `catalogue`, keyed by manufacturer slug.
 
    catalogue
-   └── manufacturerId  (e.g. 'volkswagen')
-       ├── name        Display name shown in the dropdown
-       └── vehicles    Array of vehicle objects
-           └── vehicle
-               ├── id          Unique slug  (e.g. 'vw-golf-mk7')
-               ├── name        Display name (e.g. 'Golf Mk7 (2013-2019)')
-               └── resets      Array of reset procedure objects
-                   └── reset
-                       ├── type   Slug  (e.g. 'oil-service')
-                       ├── label  Display name (e.g. 'Oil Service Reset')
-                       ├── steps  Array of instruction strings
-                       └── notes  Optional string shown below steps (or '')
+   +-- manufacturerId  (e.g. 'volkswagen')
+       +-- name        Display name shown in the dropdown
+       +-- vehicles    Array of vehicle objects
+           +-- vehicle
+               +-- id          Unique slug  (e.g. 'vw-golf-mk7')
+               +-- name        Display name (e.g. 'Golf Mk7 (2013-2019)')
+               +-- resets      Array of reset procedure objects
+                   +-- reset
+                       +-- type   Slug  (e.g. 'oil-service')
+                       +-- label  Display name (e.g. 'Oil Service Reset')
+                       +-- steps  Array of instruction strings
+                       +-- notes  Optional string shown below steps (or '')
 
    HOW TO ADD A NEW MANUFACTURER:
      Add a new key to `catalogue` following the same pattern.
@@ -109,10 +109,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -120,17 +120,17 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
         ]
       },
 
-      /* --- A3 8V (2012-2020) — VERIFIED --- */
+      /* --- A3 8V (2012-2020) -- VERIFIED --- */
       {
         id:   'audi-a3-8v',
         name: 'A3 8V (2012-2020)',
@@ -173,10 +173,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -184,10 +184,10 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
@@ -203,10 +203,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -214,10 +214,10 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
@@ -233,10 +233,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -244,10 +244,10 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
@@ -263,10 +263,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -274,10 +274,10 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
@@ -293,10 +293,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -304,10 +304,10 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
@@ -323,10 +323,10 @@ var catalogue = {
             type:  'oil-service',
             label: 'Oil Service Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to service menu.',
-              '[Placeholder] Step 3 — confirm oil service reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to service menu.',
+              '[Placeholder] Step 3 -- confirm oil service reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           },
@@ -334,10 +334,10 @@ var catalogue = {
             type:  'inspection',
             label: 'Inspection Reset',
             steps: [
-              '[Placeholder] Step 1 — switch ignition ON.',
-              '[Placeholder] Step 2 — navigate to inspection menu.',
-              '[Placeholder] Step 3 — confirm inspection reset.',
-              '[Placeholder] Step 4 — switch ignition OFF and verify.'
+              '[Placeholder] Step 1 -- switch ignition ON.',
+              '[Placeholder] Step 2 -- navigate to inspection menu.',
+              '[Placeholder] Step 3 -- confirm inspection reset.',
+              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
             ],
             notes: 'Procedure not yet verified. Steps will be updated shortly.'
           }
@@ -771,7 +771,7 @@ function findReset(manufacturerId, vehicleId, resetType) {
 
 
 /* ============================================================
-   SELECT HELPERS — clear and rebuild a <select> element
+   SELECT HELPERS -- clear and rebuild a <select> element
    ============================================================ */
 
 /* Empties a select back to just its placeholder option */
@@ -806,14 +806,14 @@ var resultArea         = document.getElementById('resultArea');
 
 /* ============================================================
    INIT MANUFACTURER DROPDOWN
-   Runs once on page load — all other dropdowns start disabled.
+   Runs once on page load -- all other dropdowns start disabled.
    ============================================================ */
 
 populateSelect(manufacturerSelect, getManufacturers(), 'name');
 
 
 /* ============================================================
-   CASCADE: manufacturer → vehicle
+   CASCADE: manufacturer -> vehicle
    ============================================================ */
 
 manufacturerSelect.addEventListener('change', function() {
@@ -832,7 +832,7 @@ manufacturerSelect.addEventListener('change', function() {
 
 
 /* ============================================================
-   CASCADE: vehicle → reset type
+   CASCADE: vehicle -> reset type
    ============================================================ */
 
 vehicleSelect.addEventListener('change', function() {
@@ -881,7 +881,7 @@ function renderProcedure(manufacturerName, vehicleName, reset) {
       '</li>';
   }
 
-  /* Notes block — only rendered if notes string is non-empty */
+  /* Notes block -- only rendered if notes string is non-empty */
   var notesHTML = '';
   if (reset.notes && reset.notes.trim() !== '') {
     notesHTML =
@@ -973,7 +973,7 @@ function submitMissingVehicleRequest(data) {
 
   /* Show confirmation to user */
   var feedback = document.getElementById('requestFeedback');
-  feedback.textContent = 'Thanks — we\'ve noted your request and will add this vehicle soon.';
+  feedback.textContent = 'Thanks -- we\'ve noted your request and will add this vehicle soon.';
   feedback.className   = 'request-feedback request-feedback--success';
 
   /* Clear the form fields */
