@@ -474,11 +474,12 @@ body {
    ============================================================ */
 
 .request-card {
-  /* Slightly lower visual weight than the selector card —
-     it's secondary content, not the primary action */
+  /* Explicitly override .card's padding — the header and form body
+     each control their own internal spacing */
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 0;           /* Header and body have their own padding */
+  border-radius: var(--radius);
+  padding: 0 !important;
   overflow: hidden;
 }
 
