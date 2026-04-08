@@ -1,11 +1,10 @@
 /* ============================================================
-   ResetMate — style.css
+   ResetMate — style.css  (v1.1)
    Workshop-style dark UI, mobile-first
    ============================================================ */
 
 /* ============================================================
    DESIGN TOKENS
-   Change colours, fonts, and radii here — nowhere else.
    ============================================================ */
 :root {
   --bg:               #0f1114;
@@ -25,6 +24,10 @@
   --text:             #e6eaf0;
   --text-muted:       #7a8494;
   --text-dim:         #4e5665;
+  --success:          #2ea043;
+  --success-dim:      rgba(46, 160, 67, 0.12);
+  --error-dim:        rgba(232, 58, 58, 0.12);
+  --error:            #e83a3a;
   --font-ui:          'IBM Plex Sans', sans-serif;
   --font-mono:        'IBM Plex Mono', monospace;
   --radius:           14px;
@@ -33,14 +36,8 @@
 }
 
 /* ============================================================
-   SEO & ACCESSIBILITY UTILITIES
+   SEO UTILITY
    ============================================================ */
-
-/*
-  .seo-description — visible to search engine crawlers and screen
-  readers but hidden from sighted users. Do not use display:none
-  or visibility:hidden as those are ignored by crawlers too.
-*/
 .seo-description {
   position: absolute;
   width: 1px;
@@ -181,7 +178,9 @@ body {
   color: var(--text-muted);
 }
 
-/* --- Select --- */
+/* ============================================================
+   SELECT
+   ============================================================ */
 .select-wrapper {
   position: relative;
 }
@@ -199,7 +198,7 @@ body {
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, opacity 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -209,18 +208,21 @@ body {
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
-/* Manufacturer group headings inside the vehicle dropdown */
+/* Disabled state — shown while waiting for upstream selection */
+.field-select:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .field-select optgroup {
   color: var(--text-muted);
   font-style: normal;
   font-weight: 600;
-  font-size: 0.85rem;
 }
 
 .field-select optgroup option {
   color: var(--text);
   font-weight: 500;
-  padding-left: 8px;
 }
 
 .select-chevron {
@@ -234,7 +236,38 @@ body {
   pointer-events: none;
 }
 
-/* --- Button --- */
+/* ============================================================
+   TEXT INPUT (used in request form)
+   ============================================================ */
+.field-input {
+  width: 100%;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 15px 16px;
+  font-family: var(--font-ui);
+  font-size: 0.975rem;
+  font-weight: 400;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.field-input::placeholder {
+  color: var(--text-dim);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+/* Primary — blue, used for Show Steps */
 .btn-primary {
   width: 100%;
   background: var(--primary);
@@ -255,13 +288,38 @@ body {
   margin-top: 2px;
 }
 
-.btn-primary:hover {
-  background: #2d84f5;
-}
+.btn-primary:hover  { background: #2d84f5; }
 
 .btn-primary:active {
   background: var(--primary-dark);
   box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+/* Secondary — outlined, used for Submit Request */
+.btn-secondary {
+  width: 100%;
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 15px 20px;
+  font-family: var(--font-ui);
+  font-size: 0.975rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, transform 0.08s;
+  -webkit-tap-highlight-color: transparent;
+  margin-top: 4px;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-glow);
+}
+
+.btn-secondary:active {
+  background: rgba(40, 120, 232, 0.25);
   transform: translateY(1px);
 }
 
@@ -385,6 +443,101 @@ body {
   line-height: 1.6;
   color: var(--text);
   flex: 1;
+}
+
+/* --- Optional notes block (shown below steps if notes exist) --- */
+.result-notes {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.result-notes-icon {
+  font-size: 1rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  line-height: 1.6;
+}
+
+.result-notes-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ============================================================
+   MISSING VEHICLE REQUEST CARD
+   ============================================================ */
+
+.request-card {
+  /* Slightly lower visual weight than the selector card —
+     it's secondary content, not the primary action */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0;           /* Header and body have their own padding */
+  overflow: hidden;
+}
+
+/* Coloured header band — mirrors the result-header treatment */
+.request-header {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.request-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.request-title {
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.request-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* Form body — same padding as .card */
+.request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 18px;
+}
+
+/* Feedback message shown after submission */
+.request-feedback {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  min-height: 1.4em;   /* reserves space so layout doesn't jump */
+  padding: 0 2px;
+}
+
+.request-feedback--success {
+  color: var(--success);
+}
+
+.request-feedback--error {
+  color: var(--error);
 }
 
 /* ============================================================

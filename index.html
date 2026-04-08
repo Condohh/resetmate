@@ -11,7 +11,7 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.resetmate.co.uk/" />
 
-  <!-- ===== OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ===== -->
+  <!-- ===== OPEN GRAPH ===== -->
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://www.resetmate.co.uk/" />
   <meta property="og:title"       content="ResetMate – Free Service Reset Procedures" />
@@ -23,12 +23,7 @@
   <meta name="twitter:title"       content="ResetMate – Free Service Reset Procedures" />
   <meta name="twitter:description" content="Step-by-step oil service and inspection reset procedures for VW, Audi, BMW and more. Free mobile workshop reference tool." />
 
-  <!-- ===== STRUCTURED DATA — WebApplication (JSON-LD) ===== -->
-  <!--
-    This tells Google exactly what kind of page this is.
-    Update "offers.price" if you ever charge for the tool.
-    Update "applicationCategory" if the scope expands.
-  -->
+  <!-- ===== STRUCTURED DATA ===== -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -51,13 +46,10 @@
   }
   </script>
 
-  <!-- ===== PERFORMANCE ===== -->
-  <!-- dns-prefetch speeds up the Google Fonts request -->
+  <!-- ===== FONTS & STYLES ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" />
-
-  <!-- App styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -79,38 +71,51 @@
   <!-- ===== MAIN ===== -->
   <main class="main-content" aria-label="Service reset procedure lookup">
 
-    <!-- Selector card -->
+    <!-- Visually hidden SEO text -->
+    <p class="seo-description">
+      Select your manufacturer, vehicle, and reset type to instantly view the correct
+      step-by-step service reset procedure. Covers oil service resets and inspection
+      resets for Volkswagen, Audi, BMW, Mercedes-Benz, Toyota, Honda, Nissan, Mazda,
+      Subaru, Mitsubishi, Suzuki, Peugeot, Renault, Citroen, Skoda, SEAT, and Volvo.
+    </p>
+
+    <!-- ===== SELECTOR CARD ===== -->
     <section class="card selector-card" aria-label="Vehicle and reset type selection">
 
-      <!--
-        Visually hidden paragraph: gives search engines meaningful page context
-        without affecting the visual layout for users.
-      -->
-      <p class="seo-description">
-        Select your vehicle and reset type below to instantly view the correct
-        step-by-step service reset procedure. Covers oil service resets and
-        inspection resets for Volkswagen, Audi, BMW and more.
-      </p>
-
+      <!-- Step 1: Manufacturer -->
       <div class="field-group">
-        <label class="field-label" for="vehicleSelect">Vehicle</label>
+        <label class="field-label" for="manufacturerSelect">Manufacturer</label>
         <div class="select-wrapper">
-          <select id="vehicleSelect" class="field-select">
-            <option value="">Select vehicle...</option>
+          <select id="manufacturerSelect" class="field-select">
+            <option value="">Select manufacturer...</option>
           </select>
-          <svg class="select-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg class="select-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
       </div>
 
+      <!-- Step 2: Vehicle (disabled until manufacturer chosen) -->
+      <div class="field-group">
+        <label class="field-label" for="vehicleSelect">Vehicle</label>
+        <div class="select-wrapper">
+          <select id="vehicleSelect" class="field-select" disabled>
+            <option value="">Select manufacturer first...</option>
+          </select>
+          <svg class="select-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Step 3: Reset type (disabled until vehicle chosen) -->
       <div class="field-group">
         <label class="field-label" for="resetSelect">Reset Type</label>
         <div class="select-wrapper">
-          <select id="resetSelect" class="field-select">
-            <option value="">Select reset type...</option>
+          <select id="resetSelect" class="field-select" disabled>
+            <option value="">Select vehicle first...</option>
           </select>
-          <svg class="select-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg class="select-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
@@ -120,22 +125,91 @@
 
     </section>
 
-    <!-- Result area — populated by script.js -->
+    <!-- ===== RESULT AREA — populated by script.js ===== -->
     <section id="resultArea" class="result-area" aria-live="polite"></section>
+
+    <!-- ===== MISSING VEHICLE REQUEST FORM ===== -->
+    <!--
+      DEVELOPER NOTE:
+      This form is intentionally not connected to a backend.
+      To activate it, attach a submit handler in script.js that POSTs
+      the collected data (manufacturer, model, year) to your chosen
+      endpoint — e.g. a Formspree URL, a serverless function, or a
+      direct API call. The field IDs and form ID are stable and ready.
+    -->
+    <section class="card request-card" aria-label="Request a missing vehicle">
+
+      <div class="request-header">
+        <svg class="request-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h2 class="request-title">Can't find your vehicle?</h2>
+          <p class="request-subtitle">Let us know and we'll add it.</p>
+        </div>
+      </div>
+
+      <form id="missingVehicleForm" class="request-form" novalidate>
+
+        <div class="field-group">
+          <label class="field-label" for="reqManufacturer">Manufacturer</label>
+          <input
+            type="text"
+            id="reqManufacturer"
+            name="manufacturer"
+            class="field-input"
+            placeholder="e.g. Ford"
+            autocomplete="off"
+            maxlength="60"
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="reqModel">Model</label>
+          <input
+            type="text"
+            id="reqModel"
+            name="model"
+            class="field-input"
+            placeholder="e.g. Focus Mk3"
+            autocomplete="off"
+            maxlength="60"
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="reqYear">Approximate Year</label>
+          <input
+            type="text"
+            id="reqYear"
+            name="year"
+            class="field-input"
+            placeholder="e.g. 2017"
+            autocomplete="off"
+            maxlength="10"
+            inputmode="numeric"
+          />
+        </div>
+
+        <button type="submit" id="requestSubmitBtn" class="btn-secondary">
+          Submit Request
+        </button>
+
+        <!-- Submission feedback — shown by JS after submit -->
+        <p id="requestFeedback" class="request-feedback" aria-live="polite"></p>
+
+      </form>
+
+    </section>
 
   </main>
 
   <!-- ===== FOOTER ===== -->
   <footer class="app-footer">
-    <p>ResetMate v1.0 &nbsp;&middot;&nbsp; Workshop Reference Tool &nbsp;&middot;&nbsp; <span id="footer-year"></span></p>
+    <p>ResetMate v1.1 &nbsp;&middot;&nbsp; Workshop Reference Tool &nbsp;&middot;&nbsp; <span id="footer-year"></span></p>
   </footer>
 
-  <!--
-    script.js is loaded here — at the end of <body>.
-    This means the entire DOM is already parsed when the script runs,
-    so getElementById calls and event listeners work without any
-    DOMContentLoaded wrapper.
-  -->
   <script src="script.js"></script>
 
 </body>
