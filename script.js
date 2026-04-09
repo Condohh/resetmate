@@ -1,5 +1,5 @@
 /* ============================================================
-   ResetMate -- script.js  (v1.2.0)
+   ResetMate -- script.js  (v1.2.1)
 
    DATA STRUCTURE OVERVIEW
    -----------------------
@@ -781,12 +781,15 @@ function clearSelect(selectEl, placeholderText) {
   selectEl.value     = '';
 }
 
-/* Populates a select from an array of { id, name/label } objects */
-function populateSelect(selectEl, items, nameKey) {
+/* Populates a select from an array of objects.
+   valueKey: the property to use as option.value  (default: 'id')
+   labelKey: the property to use as option.textContent */
+function populateSelect(selectEl, items, labelKey, valueKey) {
+  valueKey = valueKey || 'id';
   for (var i = 0; i < items.length; i++) {
     var opt = document.createElement('option');
-    opt.value       = items[i].id;
-    opt.textContent = items[i][nameKey];
+    opt.value       = items[i][valueKey];
+    opt.textContent = items[i][labelKey];
     selectEl.appendChild(opt);
   }
   selectEl.disabled = false;
@@ -846,7 +849,7 @@ vehicleSelect.addEventListener('change', function() {
   if (!vId) return;
 
   var resets = getResetsFor(mId, vId);
-  populateSelect(resetSelect, resets, 'label');
+  populateSelect(resetSelect, resets, 'label', 'type');
 });
 
 
