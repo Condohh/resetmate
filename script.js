@@ -1,5 +1,5 @@
 /* ============================================================
-   ResetMate -- script.js  (v1.1)
+   ResetMate -- script.js  (v1.2.0)
 
    DATA STRUCTURE OVERVIEW
    -----------------------
