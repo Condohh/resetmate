@@ -1,5 +1,5 @@
 /* ============================================================
-   ResetMate -- style.css  (v1.2.1)
+   ResetMate -- style.css  (v1.3.0)
    Workshop-style dark UI, mobile-first
    ============================================================ */
 
@@ -539,6 +539,53 @@ body {
 
 .request-feedback--error {
   color: var(--error);
+}
+
+/* --- Unverified and scanner-only informational states --- */
+.result-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+}
+
+.result-info-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  line-height: 1.5;
+  margin-top: 1px;
+}
+
+.result-info--unverified .result-info-icon {
+  color: var(--accent);
+}
+
+.result-info--scanner .result-info-icon {
+  color: var(--primary);
+}
+
+.result-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-info-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.result-info-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.result-info-text strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
 /* ============================================================

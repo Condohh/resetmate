@@ -1,5 +1,5 @@
 /* ============================================================
-   ResetMate -- script.js  (v1.2.1)
+   ResetMate -- script.js  (v1.3.0)
 
    DATA STRUCTURE OVERVIEW
    -----------------------
@@ -14,10 +14,20 @@
                +-- name        Display name (e.g. 'Golf Mk7 (2013-2019)')
                +-- resets      Array of reset procedure objects
                    +-- reset
-                       +-- type   Slug  (e.g. 'oil-service')
-                       +-- label  Display name (e.g. 'Oil Service Reset')
-                       +-- steps  Array of instruction strings
-                       +-- notes  Optional string shown below steps (or '')
+                       +-- type    Slug used for matching (e.g. 'oil-service')
+                       +-- label   Display name in dropdown (e.g. 'Oil Service Reset')
+                       +-- status  One of: 'verified' | 'unverified' | 'scanner-only'
+                       +-- steps   Array of instruction strings (verified only, else [])
+                       +-- notes   Optional string shown below steps ('' if unused)
+                       +-- message Scanner-only explanation string (scanner-only only)
+
+   STATUS DEFINITIONS
+   ------------------
+   'verified'     -- Procedure has been tested and confirmed. Renders numbered steps.
+   'unverified'   -- Procedure exists but has not been verified. No steps shown.
+                     Renders an informational card encouraging the request form.
+   'scanner-only' -- Reset cannot be performed manually on this vehicle.
+                     The `message` field explains why. Renders an informational card.
 
    HOW TO ADD A NEW MANUFACTURER:
      Add a new key to `catalogue` following the same pattern.
@@ -25,11 +35,14 @@
    HOW TO ADD A NEW VEHICLE:
      Push a new object into the manufacturer's `vehicles` array.
 
-   HOW TO ADD A NEW RESET TYPE TO AN EXISTING VEHICLE:
-     Push a new object into that vehicle's `resets` array.
+   HOW TO ADD A VERIFIED PROCEDURE:
+     Set status: 'verified', populate steps[], set notes if needed.
 
-   HOW TO ADD NOTES TO A PROCEDURE:
-     Populate the `notes` string. Leave it as '' if not needed.
+   HOW TO ADD AN UNVERIFIED ENTRY:
+     Set status: 'unverified', leave steps: [] and notes: ''.
+
+   HOW TO ADD A SCANNER-ONLY ENTRY:
+     Set status: 'scanner-only', set message to the explanation string.
    ============================================================ */
 
 
@@ -48,8 +61,9 @@ var catalogue = {
         name: 'Golf Mk7 (2013-2019)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'verified',
             steps: [
               'Switch the ignition OFF.',
               'Press and hold the trip 0.0 button with the ignition still OFF.',
@@ -58,11 +72,13 @@ var catalogue = {
               'Switch the ignition OFF, then back ON normally.',
               'Confirm the oil service warning light has cleared.'
             ],
-            notes: ''
+            notes:   'The trip 0.0 button can become sticky over time. If it does not respond, try pressing it with slightly more force.',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'verified',
             steps: [
               'Switch the ignition OFF.',
               'Press and hold the trip 0.0 button with the ignition still OFF.',
@@ -72,7 +88,8 @@ var catalogue = {
               'Switch the ignition OFF, then back ON normally.',
               'Confirm the inspection warning light has cleared.'
             ],
-            notes: ''
+            notes:   'The trip 0.0 button can become sticky over time. If it does not respond, try pressing it with slightly more force.',
+            message: ''
           }
         ]
       },
@@ -81,14 +98,12 @@ var catalogue = {
         name: 'Polo Mk6 (2017-2021)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -106,60 +121,82 @@ var catalogue = {
         name: 'A1 8X (2010-2018)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'verified',
             steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
+              'Switch the ignition ON.',
+              'Press the CAR button on your multimedia system.',
+              'Navigate to the Servicing and checks menu.',
+              'Select Service intervals.',
+              'Scroll to the bottom of the page and select Reset oil change interval.',
+              'Switch the ignition OFF, then back ON to verify.'
             ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            notes:   'This procedure only works if your service interval is set to Fixed. If set to Flexible, the reset must be performed with a diagnostic scanner tool.',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'scanner-only',
+            steps:   [],
+            notes:   '',
+            message: 'The inspection service light on the Audi A1 8X cannot be reset manually. This reset requires a diagnostic scanner tool connected to the vehicle.'
           }
         ]
       },
 
-      /* --- A3 8V (2012-2020) -- VERIFIED --- */
+      /* --- A1 GB (2018-present) --- */
+      {
+        id:   'audi-a1-gb',
+        name: 'A1 GB (2018-present)',
+        resets: [
+          {
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'verified',
+            steps: [
+              'Switch the ignition ON.',
+              'From the home menu on your car radio display, enter the CAR menu.',
+              'Navigate to Settings and service.',
+              'Scroll down and select Service intervals.',
+              'Press the Reset button.',
+              'Switch the ignition OFF, then back ON to verify.'
+            ],
+            notes:   'This procedure only works if your service interval is set to Fixed. If set to Flexible, the reset must be performed with a diagnostic scanner tool.',
+            message: ''
+          },
+          {
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'scanner-only',
+            steps:   [],
+            notes:   '',
+            message: 'The inspection service light on the Audi A1 GB cannot be reset manually. This reset requires a diagnostic scanner tool connected to the vehicle.'
+          }
+        ]
+      },
+
+      /* --- A3 8V (2012-2020) --- */
       {
         id:   'audi-a3-8v',
         name: 'A3 8V (2012-2020)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              'Turn the ignition to position II (accessories on, engine off).',
-              'Press and hold the trip reset button on the instrument cluster for 8 seconds until the oil change indicator appears.',
-              'Release, then immediately press and hold again for 3 seconds.',
-              "The display will show '---' confirming the reset.",
-              'Turn the ignition off.',
-              'Restart the vehicle and confirm the service light is cleared.'
-            ],
-            notes: ''
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              'Turn the ignition to position II (accessories on, engine off).',
-              'Hold the trip reset button on the cluster for 8 seconds until the inspection message appears.',
-              'Release, then immediately press and hold again for 3 seconds.',
-              "The cluster will confirm with '---' or a clearing spanner icon.",
-              'Turn the ignition off and wait 10 seconds.',
-              'Restart the vehicle and verify the inspection warning is gone.'
-            ],
-            notes: ''
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -170,26 +207,20 @@ var catalogue = {
         name: 'A4 B8 (2008-2015)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -200,26 +231,20 @@ var catalogue = {
         name: 'A4 B9 (2015-2024)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -230,26 +255,20 @@ var catalogue = {
         name: 'A5 B8 (2007-2016)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -260,26 +279,20 @@ var catalogue = {
         name: 'A6 C7 (2011-2018)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -290,26 +303,20 @@ var catalogue = {
         name: 'Q3 8U (2011-2018)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -320,26 +327,20 @@ var catalogue = {
         name: 'Q5 8R (2008-2017)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to service menu.',
-              '[Placeholder] Step 3 -- confirm oil service reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              '[Placeholder] Step 1 -- switch ignition ON.',
-              '[Placeholder] Step 2 -- navigate to inspection menu.',
-              '[Placeholder] Step 3 -- confirm inspection reset.',
-              '[Placeholder] Step 4 -- switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -356,32 +357,20 @@ var catalogue = {
         name: '3 Series F30 (2012-2019)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              'Press START/STOP without pressing the brake pedal to enter ignition-on mode.',
-              'In iDrive, navigate to: Vehicle Info > Service Required.',
-              "Scroll to 'Engine Oil' and select it.",
-              'Press and hold the BC button (left indicator stalk) for 3 seconds.',
-              "Select 'Reset' when the confirmation screen appears.",
-              'Press START/STOP to turn off the ignition.',
-              'Restart and confirm the CBS oil service indicator is cleared.'
-            ],
-            notes: ''
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           },
           {
-            type:  'inspection',
-            label: 'Inspection Reset',
-            steps: [
-              'Press START/STOP without pressing the brake pedal to enter ignition-on mode.',
-              'In iDrive, navigate to: Vehicle Info > Service Required.',
-              'Scroll to the Inspection item and select it.',
-              'Hold the BC button on the indicator stalk for 3 seconds.',
-              "Confirm 'Reset' on the prompt.",
-              'Turn ignition off via START/STOP.',
-              'Restart and verify the inspection indicator is cleared in the CBS menu.'
-            ],
-            notes: ''
+            type:    'inspection',
+            label:   'Inspection Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       },
@@ -390,14 +379,12 @@ var catalogue = {
         name: '1 Series F20 (2011-2019)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -413,14 +400,12 @@ var catalogue = {
         name: 'C-Class W205 (2014-2021)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -436,14 +421,12 @@ var catalogue = {
         name: 'Corolla E210 (2018-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -459,14 +442,12 @@ var catalogue = {
         name: 'Civic Mk10 (2016-2021)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -482,14 +463,12 @@ var catalogue = {
         name: 'Qashqai J11 (2013-2021)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -505,14 +484,12 @@ var catalogue = {
         name: 'Mazda3 BP (2019-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -528,14 +505,12 @@ var catalogue = {
         name: 'Impreza GK (2017-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -551,14 +526,12 @@ var catalogue = {
         name: 'Outlander GF (2012-2021)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -574,14 +547,12 @@ var catalogue = {
         name: 'Swift AZ (2017-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -597,14 +568,12 @@ var catalogue = {
         name: '208 Mk2 (2019-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -620,14 +589,12 @@ var catalogue = {
         name: 'Clio Mk5 (2019-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -643,14 +610,12 @@ var catalogue = {
         name: 'C3 Mk3 (2016-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -666,14 +631,12 @@ var catalogue = {
         name: 'Octavia Mk4 (2020-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -689,14 +652,12 @@ var catalogue = {
         name: 'Ibiza Mk5 (2017-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -712,14 +673,12 @@ var catalogue = {
         name: 'XC40 Mk1 (2017-present)',
         resets: [
           {
-            type:  'oil-service',
-            label: 'Oil Service Reset',
-            steps: [
-              '[Placeholder] Switch ignition ON.',
-              '[Placeholder] Navigate to service menu and confirm reset.',
-              '[Placeholder] Switch ignition OFF and verify.'
-            ],
-            notes: 'Procedure not yet verified. Steps will be updated shortly.'
+            type:    'oil-service',
+            label:   'Oil Service Reset',
+            status:  'unverified',
+            steps:   [],
+            notes:   '',
+            message: ''
           }
         ]
       }
@@ -782,8 +741,8 @@ function clearSelect(selectEl, placeholderText) {
 }
 
 /* Populates a select from an array of objects.
-   valueKey: the property to use as option.value  (default: 'id')
-   labelKey: the property to use as option.textContent */
+   labelKey: the property to use as option.textContent
+   valueKey: the property to use as option.value (default: 'id') */
 function populateSelect(selectEl, items, labelKey, valueKey) {
   valueKey = valueKey || 'id';
   for (var i = 0; i < items.length; i++) {
@@ -822,7 +781,6 @@ populateSelect(manufacturerSelect, getManufacturers(), 'name');
 manufacturerSelect.addEventListener('change', function() {
   var mId = this.value;
 
-  /* Always clear downstream selects and result when manufacturer changes */
   clearSelect(vehicleSelect, 'Select vehicle...');
   clearSelect(resetSelect,   'Select vehicle first...');
   resultArea.innerHTML = '';
@@ -842,7 +800,6 @@ vehicleSelect.addEventListener('change', function() {
   var mId = manufacturerSelect.value;
   var vId = this.value;
 
-  /* Clear downstream and result when vehicle changes */
   clearSelect(resetSelect, 'Select reset type...');
   resultArea.innerHTML = '';
 
@@ -854,7 +811,7 @@ vehicleSelect.addEventListener('change', function() {
 
 
 /* ============================================================
-   RENDER: Warning message
+   RENDER: Warning (selection validation)
    ============================================================ */
 
 function renderWarning(message) {
@@ -870,12 +827,24 @@ function renderWarning(message) {
 
 
 /* ============================================================
-   RENDER: Procedure steps (+ optional notes)
+   RENDER: Result card header (shared by all three render paths)
    ============================================================ */
 
-function renderProcedure(manufacturerName, vehicleName, reset) {
-  var stepsHTML = '';
+function buildResultHeader(manufacturerName, vehicleName, resetLabel) {
+  return '<div class="result-header">' +
+    '<span class="result-vehicle">' + manufacturerName + ' ' + vehicleName + '</span>' +
+    '<span class="result-sep">&middot;</span>' +
+    '<span class="result-reset-type">' + resetLabel + '</span>' +
+  '</div>';
+}
 
+
+/* ============================================================
+   RENDER: Verified procedure -- numbered steps + optional note
+   ============================================================ */
+
+function renderVerified(manufacturerName, vehicleName, reset) {
+  var stepsHTML = '';
   for (var i = 0; i < reset.steps.length; i++) {
     stepsHTML +=
       '<li class="step-item">' +
@@ -884,7 +853,6 @@ function renderProcedure(manufacturerName, vehicleName, reset) {
       '</li>';
   }
 
-  /* Notes block -- only rendered if notes string is non-empty */
   var notesHTML = '';
   if (reset.notes && reset.notes.trim() !== '') {
     notesHTML =
@@ -896,11 +864,7 @@ function renderProcedure(manufacturerName, vehicleName, reset) {
 
   resultArea.innerHTML =
     '<div class="result-card">' +
-      '<div class="result-header">' +
-        '<span class="result-vehicle">' + manufacturerName + ' ' + vehicleName + '</span>' +
-        '<span class="result-sep">&middot;</span>' +
-        '<span class="result-reset-type">' + reset.label + '</span>' +
-      '</div>' +
+      buildResultHeader(manufacturerName, vehicleName, reset.label) +
       '<ol class="steps-list">' + stepsHTML + '</ol>' +
       notesHTML +
     '</div>';
@@ -910,7 +874,52 @@ function renderProcedure(manufacturerName, vehicleName, reset) {
 
 
 /* ============================================================
+   RENDER: Unverified procedure -- no steps, informational state
+   ============================================================ */
+
+function renderUnverified(manufacturerName, vehicleName, reset) {
+  resultArea.innerHTML =
+    '<div class="result-card">' +
+      buildResultHeader(manufacturerName, vehicleName, reset.label) +
+      '<div class="result-info result-info--unverified">' +
+        '<span class="result-info-icon">&#9888;</span>' +
+        '<div class="result-info-body">' +
+          '<p class="result-info-heading">Procedure not yet verified</p>' +
+          '<p class="result-info-text">ResetMate only publishes fully verified, step-by-step reset instructions. ' +
+          'We are working on confirming this procedure and will add it as soon as it has been tested.</p>' +
+          '<p class="result-info-text">If you know the correct steps for this vehicle, use the <strong>Can\'t find your vehicle?</strong> form below to let us know.</p>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+
+/* ============================================================
+   RENDER: Scanner-only procedure -- informational state
+   ============================================================ */
+
+function renderScannerOnly(manufacturerName, vehicleName, reset) {
+  resultArea.innerHTML =
+    '<div class="result-card">' +
+      buildResultHeader(manufacturerName, vehicleName, reset.label) +
+      '<div class="result-info result-info--scanner">' +
+        '<span class="result-info-icon">&#128268;</span>' +
+        '<div class="result-info-body">' +
+          '<p class="result-info-heading">Diagnostic scanner required</p>' +
+          '<p class="result-info-text">' + reset.message + '</p>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+
+/* ============================================================
    EVENT: Show Steps button
+   Dispatches to the correct render function based on status.
    ============================================================ */
 
 showStepsBtn.addEventListener('click', function() {
@@ -945,7 +954,13 @@ showStepsBtn.addEventListener('click', function() {
     if (vehicles[i].id === vId) { vehicleName = vehicles[i].name; break; }
   }
 
-  renderProcedure(manufacturerName, vehicleName, reset);
+  if (reset.status === 'verified') {
+    renderVerified(manufacturerName, vehicleName, reset);
+  } else if (reset.status === 'scanner-only') {
+    renderScannerOnly(manufacturerName, vehicleName, reset);
+  } else {
+    renderUnverified(manufacturerName, vehicleName, reset);
+  }
 });
 
 
@@ -955,9 +970,9 @@ showStepsBtn.addEventListener('click', function() {
    Currently shows a confirmation message on submit.
 
    TO CONNECT TO A BACKEND LATER:
-   Replace the contents of the submitMissingVehicleRequest()
-   function below with a fetch() POST to your chosen endpoint.
-   The `data` object is already structured and ready to send.
+   Replace the contents of submitMissingVehicleRequest() below
+   with a fetch() POST to your chosen endpoint.
+   The `data` object is structured and ready to send.
 
    Example (Formspree):
      fetch('https://formspree.io/f/YOUR_ID', {
@@ -968,18 +983,14 @@ showStepsBtn.addEventListener('click', function() {
    ============================================================ */
 
 function submitMissingVehicleRequest(data) {
-  /*
-    STUB: Replace this function body when connecting to a backend.
-    `data` contains: { manufacturer, model, year }
-  */
+  /* STUB: replace this body when connecting to a backend.
+     `data` contains: { manufacturer, model, year } */
   console.log('Missing vehicle request:', data);
 
-  /* Show confirmation to user */
   var feedback = document.getElementById('requestFeedback');
-  feedback.textContent = 'Thanks -- we\'ve noted your request and will add this vehicle soon.';
+  feedback.textContent = "Thanks -- we've noted your request and will add this vehicle soon.";
   feedback.className   = 'request-feedback request-feedback--success';
 
-  /* Clear the form fields */
   document.getElementById('reqManufacturer').value = '';
   document.getElementById('reqModel').value        = '';
   document.getElementById('reqYear').value         = '';
@@ -993,7 +1004,6 @@ document.getElementById('missingVehicleForm').addEventListener('submit', functio
   var year         = document.getElementById('reqYear').value.trim();
   var feedback     = document.getElementById('requestFeedback');
 
-  /* Basic client-side validation */
   if (!manufacturer || !model) {
     feedback.textContent = 'Please fill in at least the manufacturer and model.';
     feedback.className   = 'request-feedback request-feedback--error';
